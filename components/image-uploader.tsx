@@ -203,4 +203,3 @@ export function ImageUploader({ resultImage, templateName }: ImageUploaderProps)
     </div>
   )
 }
-

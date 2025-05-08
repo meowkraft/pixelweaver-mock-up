@@ -9,6 +9,8 @@ import { ArrowLeft, ZoomIn, ZoomOut, RotateCw, Check } from "lucide-react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 
+type TShirtColor = "Black" | "White"
+
 export default function TshirtMockup() {
   const [processedImage, setProcessedImage] = useState<string | null>(null)
   const [scale, setScale] = useState(1)
@@ -17,7 +19,16 @@ export default function TshirtMockup() {
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
   const [rotation, setRotation] = useState(0)
   const [selectedSize, setSelectedSize] = useState<string | null>(null)
+  const [selectedColor, setSelectedColor] = useState<TShirtColor>("White")
   const [isAdded, setIsAdded] = useState(false)
+
+  // T-shirt images for different colors
+  const tshirtImages = {
+    Black:
+      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/4d906c4e-9b5c-4507-bbba-e508b30a8af3-BAfZ5XXZq66I2iMV0fCCFbcGHNsQmo.png", // Replace with actual black t-shirt image
+    White:
+      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/download%20-%20Edited-eG2tZ3the6l0j90Hrc2F0SSXZcgwBS.png",
+  }
 
   useEffect(() => {
     const storedImage = localStorage.getItem("processedImage")
@@ -55,6 +66,10 @@ export default function TshirtMockup() {
     setSelectedSize(size)
   }
 
+  const handleColorSelect = (color: TShirtColor) => {
+    setSelectedColor(color)
+  }
+
   const handleAddToCart = () => {
     setIsAdded(true)
     setTimeout(() => {
@@ -86,8 +101,8 @@ export default function TshirtMockup() {
           <div className="flex-1 bg-[#1C1C1C] rounded-lg p-4">
             <div className="relative w-full h-[500px] flex items-center justify-center overflow-hidden">
               <img
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/4d906c4e-9b5c-4507-bbba-e508b30a8af3-BAfZ5XXZq66I2iMV0fCCFbcGHNsQmo.png"
-                alt="T-shirt mockup"
+                src={tshirtImages[selectedColor] || "/placeholder.svg"}
+                alt={`${selectedColor} t-shirt mockup`}
                 className="max-h-full max-w-full object-contain"
               />
 
@@ -172,6 +187,25 @@ export default function TshirtMockup() {
 
             <div className="pt-4 space-y-4">
               <div>
+                <p className="text-sm text-[#E0E0E0] mb-2">COLOR</p>
+                <div className="grid grid-cols-3 gap-2">
+                  {(["Black", "White"] as const).map((color) => (
+                    <Button
+                      key={color}
+                      variant="outline"
+                      className={cn(
+                        "bg-[#1C1C1C] border-[#505050] hover:bg-[#505050]",
+                        selectedColor === color && "bg-[#505050] border-[#E0E0E0]",
+                      )}
+                      onClick={() => handleColorSelect(color)}
+                    >
+                      {color}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
                 <p className="text-sm text-[#E0E0E0] mb-2">SIZE</p>
                 <div className="grid grid-cols-4 gap-2">
                   {["S", "M", "L", "XL"].map((size) => (
@@ -212,4 +246,3 @@ export default function TshirtMockup() {
     </main>
   )
 }
-
