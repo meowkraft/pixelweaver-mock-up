@@ -112,6 +112,11 @@ export function ImageUploader({ resultImage, templateName }: ImageUploaderProps)
       } else {
         setLoading(false)
         setGenerated(true)
+
+        // Store the design image in localStorage
+        if (image) {
+          localStorage.setItem("designImage", image)
+        }
       }
     }
 
@@ -120,6 +125,10 @@ export function ImageUploader({ resultImage, templateName }: ImageUploaderProps)
 
   const handleClick = () => {
     fileInputRef.current?.click()
+  }
+
+  const handleNext = () => {
+    router.push("/tshirt-mockup")
   }
 
   const canGenerate = !!image && !!resultImage
@@ -192,7 +201,7 @@ export function ImageUploader({ resultImage, templateName }: ImageUploaderProps)
 
         {generated && (
           <Button
-            onClick={() => router.push("/tshirt-mockup")}
+            onClick={handleNext}
             className="bg-[#505050] text-[#F8F8F8] hover:bg-[#1C1C1C] px-8"
             disabled={!resultImage}
           >

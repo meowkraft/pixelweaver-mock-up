@@ -25,14 +25,21 @@ export default function TshirtMockup() {
   // T-shirt images for different colors
   const tshirtImages = {
     Black:
-      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/4d906c4e-9b5c-4507-bbba-e508b30a8af3-BAfZ5XXZq66I2iMV0fCCFbcGHNsQmo.png", // Replace with actual black t-shirt image
+      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/4d906c4e-9b5c-4507-bbba-e508b30a8af3-BAfZ5XXZq66I2iMV0fCCFbcGHNsQmo.png", // Washed black t-shirt image
     White:
-      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/download%20-%20Edited-eG2tZ3the6l0j90Hrc2F0SSXZcgwBS.png",
+      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/download%20-%20Edited-eG2tZ3the6l0j90Hrc2F0SSXZcgwBS.png", // White t-shirt image
   }
 
   useEffect(() => {
-    const storedImage = localStorage.getItem("processedImage")
-    if (storedImage) {
+    // First try to get the design image (the one uploaded by the user)
+    const designImage = localStorage.getItem("processedImage")
+
+    // If that's not available, fall back to the processed image
+    const storedImage = localStorage.getItem("designImage")
+
+    if (designImage) {
+      setProcessedImage(designImage)
+    } else if (storedImage) {
       setProcessedImage(storedImage)
     }
   }, [])
@@ -188,7 +195,7 @@ export default function TshirtMockup() {
             <div className="pt-4 space-y-4">
               <div>
                 <p className="text-sm text-[#E0E0E0] mb-2">COLOR</p>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-2 gap-2">
                   {(["Black", "White"] as const).map((color) => (
                     <Button
                       key={color}

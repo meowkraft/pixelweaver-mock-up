@@ -5,12 +5,18 @@ import type React from "react"
 import { ImageUploader } from "@/components/image-uploader"
 import { Button } from "@/components/ui/button"
 import { Upload } from "lucide-react"
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 
 export default function Home() {
   const [resultImage, setResultImage] = useState<string | null>(null)
   const [templateName, setTemplateName] = useState("Cyberglyph")
   const resultInputRef = useRef<HTMLInputElement>(null)
+
+  // Clear localStorage when the page loads to start fresh
+  useEffect(() => {
+    localStorage.removeItem("designImage")
+    localStorage.removeItem("processedImage")
+  }, [])
 
   const handleResultUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
